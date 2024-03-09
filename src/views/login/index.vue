@@ -46,7 +46,7 @@ import { ref, reactive } from 'vue';
 // import { useRouter } from 'vue-router';
 import { ElMessage } from 'element-plus';
 import { Lock, User, View } from '@element-plus/icons-vue';
-// import { useStore } from 'vuex';
+import { useStore } from 'vuex';
 
 //获取本地保存的登录记录
 // const lgStr = localStorage.getItem('login-param');
@@ -78,13 +78,13 @@ const rules = reactive({
     ],
 })
 
-// const store = useStore()
+const store = useStore()
 const formRef = ref(null)
 const handleLogin = () => {
     formRef.value.validate(async (valid) => {
         if (valid) {
             console.log("sumbit")
-            // store.dispatch('app/login', form.value)
+            store.dispatch('app/login', form.value)
             ElMessage.success('登录成功');
         } else {
             console.log('error submit!!!')
