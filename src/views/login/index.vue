@@ -23,9 +23,13 @@
                             </el-icon>
                         </template>
                         <template #append>
-                            <el-icon @click="changeType">
+                            <!-- <el-icon @click="changeType">
                                 <View />
-                            </el-icon>
+                            </el-icon> -->
+                            <svg-icon
+                            :icon="passwordType === 'password' ? 'eye' : 'eye-open'"
+                            @click="changeType"
+                            ></svg-icon>
                         </template>
                     </el-input>
                 </el-form-item>
@@ -45,7 +49,6 @@
 import { ref, reactive } from 'vue';
 // import { useRouter } from 'vue-router';
 import { ElMessage } from 'element-plus';
-import { Lock, User, View } from '@element-plus/icons-vue';
 import { useStore } from 'vuex';
 
 //获取本地保存的登录记录
