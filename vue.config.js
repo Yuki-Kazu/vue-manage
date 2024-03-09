@@ -1,20 +1,31 @@
 const { defineConfig } = require("@vue/cli-service");
 module.exports = defineConfig({
-  transpileDependencies: true,
+    transpileDependencies: true,
 });
 
 module.exports = {
-  devServer: {
-    https: false,
-    hot: "only",
-    proxy: {
-      "/api": {
-        target: "https://e3256f43-56cf-452c-a339-733182c9254c.mock.pstmn.io",
-        changeorigin: true,
-        pathRewrite: {
-          "^/api": "",
+    devServer: {
+        https: false,
+        hot: "only",
+        proxy: {
+            "/api": {
+                target: "https://e3256f43-56cf-452c-a339-733182c9254c.mock.pstmn.io",
+                changeorigin: true,
+                pathRewrite: {
+                    "^/api": "",
+                },
+            },
         },
-      },
     },
-  },
+    css: {
+        loaderOptions: {
+          sass: {
+            additionalData:
+            `
+              @import "@/styles/variables.scss";  // scss文件地址
+              @import "@/styles/mixin.scss";     // scss文件地址
+            `
+          }
+        }
+      }
 };

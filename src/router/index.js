@@ -1,9 +1,16 @@
-import { createRouter, createWebHistory } from 'vue-router'
+import { createRouter, createWebHashHistory } from "vue-router";
+import NProgress from "nprogress";
+import "nprogress/nprogress.css";
 
 const routes = [
+    // {
+    //     path: "/",
+    //     redirect: "/login",
+    // },
     {
-        path: "/",
-        redirect: "/login",
+        path: '/',
+        name: 'home',
+        component: () => import(/* webpackChunkName: "about" */ '../layout')
     },
     {
         path: '/login',
@@ -13,8 +20,12 @@ const routes = [
 ]
 
 const router = createRouter({
-    history: createWebHistory(process.env.BASE_URL),
-    routes
-})
+    history: createWebHashHistory(),
+    routes,
+});
 
-export default router
+router.afterEach(() => {
+    NProgress.done();
+});
+
+export default router;
