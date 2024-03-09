@@ -48,12 +48,6 @@ import { User, Odometer } from "@element-plus/icons-vue";
 
 const items = [
     {
-        icon: 'Odometer',
-        index: '/dashboard',
-        title: '系统首页',
-        permiss: '1',
-    },
-    {
         icon: 'User',
         index: '/customer',
         title: '用户信息（管理员）',
