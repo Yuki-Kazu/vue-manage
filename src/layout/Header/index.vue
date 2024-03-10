@@ -35,7 +35,7 @@ import { useSidebarStore } from '../../store/sidebar';
 import { useRouter } from 'vue-router';
 import imgurl from '../../assets/img/img.jpg';
 
-const username = localStorage.getItem('ms_username') || null;
+const username = localStorage.getItem('number') || null;
 // eslint-disable-next-line no-unused-vars
 // const message: number = 2;
 
@@ -55,7 +55,7 @@ onMounted(() => {
 const router = useRouter();
 const handleCommand = (command) => {
 	if (command == 'loginout') {
-		localStorage.removeItem('ms_username');
+		localStorage.removeItem('number');
 		router.push('/login');
 	} else if (command == 'user') {
 		router.push('/user');

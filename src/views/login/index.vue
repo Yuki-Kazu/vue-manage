@@ -47,9 +47,9 @@
 
 <script setup>
 import { ref, reactive } from 'vue';
-// import { useRouter } from 'vue-router';
 import { ElMessage } from 'element-plus';
 import { useStore } from 'vuex';
+import { login } from '@/api/login';
 
 //获取本地保存的登录记录
 // const lgStr = localStorage.getItem('login-param');
@@ -84,8 +84,8 @@ const rules = reactive({
 const store = useStore()
 const formRef = ref(null)
 const handleLogin = () => {
-    formRef.value.validate(async (valid) => {
-        if (valid) {
+    formRef.value.validate(async () => {
+        if ((await login(form.value)).data.code) {
             console.log("sumbit")
             store.dispatch('app/login', form.value)
             ElMessage.success('登录成功');
@@ -154,4 +154,4 @@ const changeType = () => {
     line-height: 30px;
     color: #333;
 }
-</style>
+</style>@/api/login

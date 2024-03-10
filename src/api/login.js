@@ -8,11 +8,3 @@ export const login = (data) => {
     });
 };
 
-export const fetchData = (data) => {
-    return request({
-        url: "/admin/farmer/list",
-        method: "GET",
-        data,
-    });
-};
-

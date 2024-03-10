@@ -12,6 +12,7 @@ const routes = [
         path: "/",
         name: "Home",
         component: Home,
+        redirect: '/user',
         children: [
             {
                 path: "/user",
@@ -32,16 +33,16 @@ const routes = [
             //     component: () =>
             //         import(/* webpackChunkName: "dashboard" */ "../views/dashboard.vue"),
             // },
-            // {
-            //     path: "/customer",
-            //     name: "customer",
-            //     meta: {
-            //         title: "用户信息",
-            //         permiss: "2",
-            //     },
-            //     component: () =>
-            //         import(/* webpackChunkName: "import" */ "../views/customer.vue"),
-            // },
+            {
+                path: "/customer",
+                name: "customer",
+                meta: {
+                    title: "用户信息",
+                    // permiss: "2",
+                },
+                component: () =>
+                    import(/* webpackChunkName: "import" */ "../views/customer"),
+            },
             // {
             //     path: "/customer",
             //     name: "customer",
@@ -85,6 +86,7 @@ const router = createRouter({
     history: createWebHashHistory(),
     routes,
 });
+
 
 router.afterEach(() => {
     NProgress.done();
