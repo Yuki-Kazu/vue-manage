@@ -8,20 +8,31 @@
             </div>
             <el-table :data="tableData" border class="table" ref="multipleTable" header-cell-class-name="table-header">
                 <el-table-column prop="id" label="ID" width="55" align="center"></el-table-column>
-
-                <el-table-column prop="number" label="农民号" width="100" align="center"></el-table-column>
-
                 <el-table-column prop="name" label="用户名" align="center"></el-table-column>
-
                 <el-table-column label="联系方式" align="center">
                     <template #default="scope">{{ scope.row.phone }}</template>
                 </el-table-column>
+                <el-table-column label="头像(查看大图)" align="center">
 
+                    <template #default="scope">
+                        <el-image class="table-td-thumb" :src="scope.row.thumb" :z-index="10"
+                            :preview-src-list="[scope.row.thumb]" preview-teleported>
+                        </el-image>
+                    </template>
+                </el-table-column>
                 <el-table-column prop="address" label="地址" align="center"></el-table-column>
+                <el-table-column label="账户状态" align="center">
 
-                <el-table-column prop="starLevel" label="账户等级" align="center"></el-table-column>
+                    <template #default="scope">
+                        <el-tag :type="scope.row.state ? 'success' : 'danger'">
+                            {{ scope.row.state ? '顾客' : '农民' }}
+                        </el-tag>
+                    </template>
+                </el-table-column>
 
+                <el-table-column prop="date" label="注册时间" align="center"></el-table-column>
                 <el-table-column label="操作" width="280" align="center">
+
                     <template #default="scope">
                         <el-button type="warning" size="small" :icon="View" @click="handleView(scope.row)">
                             查看
@@ -36,19 +47,16 @@
                         </el-button>
                     </template>
                 </el-table-column>
-
             </el-table>
             <div class="pagination">
                 <el-pagination background layout="total, prev, pager, next" :current-page="query.pageIndex"
                     :page-size="query.pageSize" :total="pageTotal" @current-change="handlePageChange"></el-pagination>
             </div>
         </div>
-
         <el-dialog :title="idEdit ? '编辑用户' : '新增用户'" v-model="visible" width="500px" destroy-on-close
             :close-on-click-modal="false" @close="closeDialog">
             <TableEdit :data="rowData" :edit="idEdit" :update="updateData" />
         </el-dialog>
-
         <el-dialog title="查看用户详情" v-model="visible1" width="700px" destroy-on-close>
             <TableDetail :data="rowData" />
         </el-dialog>
@@ -59,15 +67,24 @@
 import { ref, reactive } from 'vue';
 import { ElMessage, ElMessageBox } from 'element-plus';
 import { Delete, Edit, Search, CirclePlusFilled, View } from '@element-plus/icons-vue';
-// eslint-disable-next-line no-unused-vars
-import { getUser, deleteUser } from '../../api/user';
-import TableEdit from './table-edit.vue';
+import { getUserData } from '../../api/user';
+// import TableEdit from './table-edit.vue';
 import TableDetail from './table-detail.vue';
 
+// const TableItem = {
+//   id: 0,
+//   name: '',
+//   thumb: '',
+//   phone: 0,
+//   state: '',
+//   date: '',
+//   address: ''
+// };
+
 const query = reactive({
-    // address: '',
-    name: "",
-    page: 1,
+    address: '',
+    name: '',
+    pageIndex: 1,
     pageSize: 10
 });
 
@@ -76,30 +93,28 @@ const pageTotal = ref(0);
 
 // 获取表格数据
 const getData = async () => {
-    // const res = await getUser(query);
-    // tableData.value = res.data.data.records;
-    // pageTotal.value = res.data.data.records.length || 50;
-
-    tableData.value = [
-        {
-            id: 1,
-            number: 1111,
-            name: "张三",
-            phone: 123456,
-            address: "广东省惠州市",
-            starLevel: 5,
-        },
-        {
-            id: 2,
-            number: 2222,
-            name: "李四",
-            phone: 78910,
-            address: "广东省汕头市",
-            starLevel: 4.5,
-        },
-    ];
+	const res = await getUserData();
+    console.log(res)
+	tableData.value = res.data.list;
+	pageTotal.value = res.data.pageTotal || 50;
 };
 getData();
+
+// 获取表格数据
+// const getData = () => {
+//     tableData.value = [
+//         {
+//             id: 1 ,
+//             name: "小明",
+//             thumb: "",
+//             phone: 123,
+//             state: "顾客",
+//             date: "2020-03-08",
+//             address: "广东",
+//         }
+//     ];
+// };
+// getData();
 
 // 查询操作
 const handleSearch = () => {
@@ -114,7 +129,6 @@ const handlePageChange = (val) => {
 
 
 // 删除操作
-// eslint-disable-next-line no-unused-vars
 const handleDelete = (index) => {
     // 二次确认删除
     ElMessageBox.confirm('确定要删除吗？', '提示', {
@@ -122,10 +136,7 @@ const handleDelete = (index) => {
     })
         .then(() => {
             ElMessage.success('删除成功');
-            // tableData.value.splice(index, 1);
-            const res = deleteUser(tableData.value[index].id);
-            console.log(res)
-
+            tableData.value.splice(index, 1);
         })
         .catch(() => { });
 };
@@ -140,9 +151,9 @@ const handleEdit = (index, row) => {
     idEdit.value = true;
     visible.value = true;
 };
-
 const updateData = (row) => {
     idEdit.value ? (tableData.value[idx] = row) : tableData.value.unshift(row);
+    console.log(tableData.value);
     closeDialog();
 };
 

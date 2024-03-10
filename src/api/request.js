@@ -3,14 +3,14 @@ import axios from "axios";
 
 const service = axios.create({
     // baseURL: process.env.VUE_APP_BASE_API,
-    baseURL: "http://2a314c81.r8.cpolar.top",
+    baseURL: "https://e3256f43-56cf-452c-a339-733182c9254c.mock.pstmn.io",
     timeout: 5000,
 });
 
 //请求拦截器
 service.interceptors.request.use(
     (config) => {
-        config.headers.Authorization = localStorage.getItem('token')
+        config.headers.token = localStorage.getItem('token')
         return config
     },
     (error) => {
