@@ -42,26 +42,17 @@
       </el-select>
     </el-form-item>
 
-    <!-- <el-form-item label="上传图片" prop="image">
+    <el-form-item label="上传图片" prop="image">
       <el-upload
-        v-model="fileData.file"
-        list-type="picture-card"
-        :auto-upload="false"
-        limit="1"
+        v-model:file-list="fileList"
+        class="upload-demo"
+        action="http://6a2bc4b7.r3.cpolar.cn/admin/common/upload"
+        :headers="user"
+        :on-success="handleAvatarSuccess"
       >
-        <el-icon><Plus /></el-icon>
-        <template #file="{ file }">
-          <div>
-            <img
-              class="el-upload-list__item-thumbnail"
-              :src="file.url"
-              alt=""
-            />
-          </div>
-        </template>
+        <el-button type="primary">Click to upload</el-button>
       </el-upload>
-    </el-form-item> -->
-
+    </el-form-item>
     <el-form-item>
       <el-button type="primary" @click="saveEdit(formRef)">保 存</el-button>
     </el-form-item>
@@ -71,7 +62,7 @@
 <script setup>
 // eslint-disable-next-line no-unused-vars
 import { ElMessage, FormInstance, FormRules, UploadProps } from "element-plus";
-import { ref, reactive } from "vue";
+import { ref, reactive, onMounted } from "vue";
 import { uploadAd, updateAd } from "@/api/ad";
 import { getFarmer } from "@/api/index";
 import { getItem } from "@/api/item";
@@ -127,22 +118,22 @@ getData();
 const form = ref({ ...(props.edit ? props.data : defaultData) });
 
 //表单校验
-const rules = {
-  farmerId: [
-    {
-      required: true,
-      message: "农民ID不能为空",
-      trigger: "blur",
-    },
-  ],
-  commodityId: [
-    {
-      required: true,
-      message: "商品ID不能为空",
-      trigger: "blur",
-    },
-  ],
-};
+// const rules = {
+//   farmerId: [
+//     {
+//       required: true,
+//       message: "农民ID不能为空",
+//       trigger: "blur",
+//     },
+//   ],
+//   commodityId: [
+//     {
+//       required: true,
+//       message: "商品ID不能为空",
+//       trigger: "blur",
+//     },
+//   ],
+// };
 
 const formRef = ref(FormInstance | null);
 const saveEdit = (formEl) => {
@@ -164,38 +155,45 @@ const saveEdit = (formEl) => {
       const res = updateAd(updateData);
       console.log(res);
     } else {
-      console.log(fileData);
-      //   console.log(form.value);
-      //   const res = uploadAd(form.value);
-      //   console.log(res);
+      const res = uploadAd(form.value);
+      console.log(res);
     }
 
     ElMessage.success("保存成功！");
   });
 };
 
-const loadFile = async (param) => {
-  const formData = new FormData(); // 添加文件对象
-  formData.append("file", param.file);
-  console.log(formData);
-  console.log("formData");
-};
-const handleAvatarSuccess = (response, uploadFile) => {
-  // eslint-disable-next-line no-undef
-  imageUrl.value = URL.createObjectURL(uploadFile.raw);
+const user = ref({
+  token: localStorage.getItem("token") || "{}",
+});
+const handleAvatarSuccess = (response, _file) => {
+  form.value.image = response.data;
 };
 
-const beforeAvatarUpload = (rawFile) => {
-  if (rawFile.type !== "image/jpeg") {
-    ElMessage.error("Avatar picture must be JPG format!");
-    return false;
-  } else if (rawFile.size / 1024 / 1024 > 2) {
-    ElMessage.error("Avatar picture size can not exceed 2MB!");
-    return false;
-  }
-  return true;
-};
+// const beforeAvatarUpload = (rawFile) => {
+//   if (rawFile.type !== "image/jpeg") {
+//     ElMessage.error("Avatar picture must be JPG format!");
+//     return false;
+//   } else if (rawFile.size / 1024 / 1024 > 2) {
+//     ElMessage.error("Avatar picture size can not exceed 2MB!");
+//     return false;
+//   }
+//   return true;
+// };
 </script>
+
+<!-- <script>
+export default {
+  data() {
+    const tokenString = localStorage.getItem("token") || "{}";
+    console.log("Token String:", tokenString);
+
+    return {
+      user: JSON.parse(tokenString),
+    };
+  },
+};
+</script> -->
 
 <style>
 .avatar-uploader .el-upload {

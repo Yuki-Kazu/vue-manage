@@ -12,6 +12,7 @@
     "babel-eslint": "^10.1.0",
     "core-js": "^3.8.3",
     "cropperjs": "^1.6.1",
+    "dplayer": "^1.27.1",
     "element-plus": "^2.6.1",
     "nprogress": "^0.2.0",
     "pinia": "^2.1.7",
@@ -19,6 +20,7 @@
     "vue": "^3.2.13",
     "vue-cropperjs": "^5.0.0",
     "vue-router": "^4.0.3",
+    "vue-video-player": "^6.0.0",
     "vuex": "^4.0.0"
   },
   "devDependencies": {

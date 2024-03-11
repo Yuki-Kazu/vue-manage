@@ -45,11 +45,9 @@
           align="center"
         ></el-table-column>
 
-        <el-table-column
-          prop="video"
-          label="视频"
-          align="center"
-        ></el-table-column>
+        <el-table-column prop="video" label="视频" align="center">
+          <VideoPlayer :videoSrc="video" />
+        </el-table-column>
 
         <el-table-column label="操作" width="240" align="center">
           <template #default="scope">
@@ -129,6 +127,7 @@ import {
 import { getCode, deleteCode, searchCode } from "@/api/code";
 import TableEdit from "./table-edit.vue";
 import TableDetail from "./table-detail.vue";
+import VideoPlayer from "../../component/video/video.vue";
 
 //用于分页查询
 const query = reactive({
