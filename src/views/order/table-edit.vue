@@ -1,129 +1,100 @@
 <template>
-	<el-form ref="formRef" :model="form" :rules="rules" label-width="100px">
-        <el-form-item label="ID" prop="id">
-			<el-input v-model="form.id"></el-input>
-		</el-form-item>
-		<el-form-item label="用户名" prop="name">
-			<el-input v-model="form.name"></el-input>
-		</el-form-item>
-		<el-form-item label="联系方式" prop="phone">
-			<el-input v-model.number="form.phone"></el-input>
-		</el-form-item>
-		<el-form-item label="地址" prop="address">
-			<el-input v-model="form.address"></el-input>
-		</el-form-item>
-		<el-form-item label="账户状态" prop="state">
-			<el-switch
-				v-model="form.state"
-				:active-value="1"
-				:inactive-value="0"
-				active-text="顾客"
-				inactive-text="农民"
-			></el-switch>
-		</el-form-item>
-		<el-form-item label="注册日期" prop="date">
-			<el-date-picker type="date" v-model="form.date" value-format="YYYY-MM-DD"></el-date-picker>
-		</el-form-item>
-		<el-form-item label="上传头像" prop="thumb">
-			<el-upload
-				class="avatar-uploader"
-				action="https://run.mocky.io/v3/9d059bf9-4660-45f2-925d-ce80ad6c4d15"
-				:show-file-list="false"
-				:on-success="handleAvatarSuccess"
-				:before-upload="beforeAvatarUpload"
-			>
-				<img v-if="form.thumb" :src="form.thumb" class="avatar" />
-				<el-icon v-else class="avatar-uploader-icon"><Plus /></el-icon>
-			</el-upload>
-		</el-form-item>
-		<el-form-item>
-			<el-button type="primary" @click="saveEdit(formRef)">保 存</el-button>
-		</el-form-item>
-	</el-form>
+  <el-form ref="formRef" :model="form" :rules="rules" label-width="100px">
+    <el-form-item label="订单ID" prop="id">
+      <el-input v-model="form.id"></el-input>
+    </el-form-item>
+
+    <el-form-item label="运单号" prop="trackingNumber">
+      <el-input v-model="form.trackingNumber"></el-input>
+    </el-form-item>
+
+    <el-form-item>
+      <el-button type="primary" @click="saveEdit(formRef)">保 存</el-button>
+    </el-form-item>
+  </el-form>
 </template>
 
 <script setup>
 // eslint-disable-next-line no-unused-vars
-import { ElMessage, FormInstance, FormRules, UploadProps } from 'element-plus';
-import { ref } from 'vue';
+import { ElMessage, FormInstance, FormRules, UploadProps } from "element-plus";
+import { ref } from "vue";
+import { deliverOrder } from "@/api/order";
 
 // eslint-disable-next-line no-undef
 const props = defineProps({
-	data: {
-		type: Object,
-		required: true
-	},
-	edit: {
-		type: Boolean,
-		required: false
-	},
-	update: {
-		type: Function,
-		required: true
-	}
+  data: {
+    type: Object,
+    required: true,
+  },
+  edit: {
+    type: Boolean,
+    required: false,
+  },
+  update: {
+    type: Function,
+    required: true,
+  },
 });
 
 const defaultData = {
-	id: '',
-	name: '',
-	address: '',
-	thumb: '',
-	phone: 123,
-	state: 0,
-	date: new Date()
+  id: "",
+  trackingNumber: "",
 };
 
 const form = ref({ ...(props.edit ? props.data : defaultData) });
 
+//表单校验
 const rules = {
-	id: [{ required: true, message: 'ID不能为空', trigger: 'blur' }]
+  trackingNumber: [
+    {
+      required: true,
+      message: "运单号不能为空",
+      trigger: "blur",
+    },
+  ],
 };
 
-const formRef = ref( FormInstance | null);
-const saveEdit = (formEl: FormInstance | undefined) => {
-	if (!formEl) return;
-	formEl.validate(valid => {
-		if (!valid) return false;
-		props.update(form.value);
-		ElMessage.success('保存成功！');
-	});
-};
+const formRef = ref(FormInstance | null);
+const saveEdit = (formEl) => {
+  if (!formEl) return;
+  formEl.validate((valid) => {
+    if (!valid) return false;
+    props.update(form.value);
 
-// const handleAvatarSuccess: UploadProps['onSuccess'] = (response, uploadFile) => {
-// 	form.value.thumb = URL.createObjectURL(uploadFile.raw!);
-// };
-
-const beforeAvatarUpload: UploadProps['beforeUpload'] = rawFile => {
-	if (rawFile.type !== 'image/jpeg') {
-		ElMessage.error('Avatar picture must be JPG format!');
-		return false;
-	} else if (rawFile.size / 1024 / 1024 > 2) {
-		ElMessage.error('Avatar picture size can not exceed 2MB!');
-		return false;
-	}
-	return true;
+    //edit=true时执行修改，否则执行上传
+    if (props.edit) {
+      const updateData = {
+        orderId: form.value.id,
+        trackingNumber: form.value.trackingNumber,
+      };
+      console.log(updateData);
+      const res = deliverOrder(updateData);
+      console.log(res);
+    }
+    ElMessage.success("保存成功！");
+  });
 };
 </script>
 
 <style>
 .avatar-uploader .el-upload {
-	border: 1px dashed var(--el-border-color);
-	border-radius: 6px;
-	cursor: pointer;
-	position: relative;
-	overflow: hidden;
-	transition: var(--el-transition-duration-fast);
+  border: 1px dashed var(--el-border-color);
+  border-radius: 6px;
+  cursor: pointer;
+  position: relative;
+  overflow: hidden;
+  transition: var(--el-transition-duration-fast);
 }
 
 .avatar-uploader .el-upload:hover {
-	border-color: var(--el-color-primary);
+  border-color: var(--el-color-primary);
 }
 
 .el-icon.avatar-uploader-icon {
-	font-size: 28px;
-	color: #8c939d;
-	width: 178px;
-	height: 178px;
-	text-align: center;
+  font-size: 28px;
+  color: #8c939d;
+  width: 178px;
+  height: 178px;
+  text-align: center;
 }
 </style>

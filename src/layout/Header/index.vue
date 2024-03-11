@@ -31,9 +31,9 @@
 </template>
 <script setup>
 import { onMounted } from 'vue';
-import { useSidebarStore } from '../../store/sidebar';
+import { useSidebarStore } from '@/store/sidebar';
 import { useRouter } from 'vue-router';
-import imgurl from '../../assets/img/img.jpg';
+import imgurl from '@/assets/img/img.jpg';
 
 const username = localStorage.getItem('number') || null;
 // eslint-disable-next-line no-unused-vars

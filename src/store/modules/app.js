@@ -1,5 +1,5 @@
-import { login as loginApi } from "../../api/login";
-import router from "../../router";
+import { login as loginApi } from "@/api";
+import router from "@/router";
 
 export default {
     namespaced: true,

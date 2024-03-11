@@ -3,8 +3,8 @@
     <div class="container">
       <div class="search-box">
         <el-input
-          v-model="query.name"
-          placeholder="用户名"
+          v-model="query.keyCode"
+          placeholder="溯源码"
           class="search-input mr10"
           clearable
         ></el-input>
@@ -27,38 +27,27 @@
         header-cell-class-name="table-header"
       >
         <el-table-column
-          prop="farmerId"
+          prop="id"
           label="ID"
           width="65"
           align="center"
         ></el-table-column>
 
         <el-table-column
-          prop="number"
-          label="农民号"
-          width="100"
+          prop="harvestDate"
+          label="收获时间"
           align="center"
         ></el-table-column>
 
         <el-table-column
-          prop="name"
-          label="用户名"
-          align="center"
-        ></el-table-column>
-
-        <el-table-column label="联系方式" align="center">
-          <template #default="scope">{{ scope.row.phone }}</template>
-        </el-table-column>
-
-        <el-table-column
-          prop="address"
-          label="地址"
+          prop="keyCode"
+          label="溯源码"
           align="center"
         ></el-table-column>
 
         <el-table-column
-          prop="starLevel"
-          label="账户等级"
+          prop="video"
+          label="视频"
           align="center"
         ></el-table-column>
 
@@ -70,7 +59,7 @@
               :icon="View"
               @click="handleView(scope.row)"
             >
-              查看
+              详情
             </el-button>
             <el-button
               type="primary"
@@ -85,7 +74,7 @@
               type="danger"
               size="small"
               :icon="Delete"
-              @click="handleDelete(scope.$index, scope.row.farmerId)"
+              @click="handleDelete(scope.$index, scope.row.id)"
               v-permiss="16"
             >
               删除
@@ -137,22 +126,21 @@ import {
   CirclePlusFilled,
   View,
 } from "@element-plus/icons-vue";
-// eslint-disable-next-line no-unused-vars
-import { getUser, deleteUser, searchUser } from "@/api/user";
+import { getCode, deleteCode, searchCode } from "@/api/code";
 import TableEdit from "./table-edit.vue";
 import TableDetail from "./table-detail.vue";
 
 //用于分页查询
 const query = reactive({
-  name: "",
+  keyCode: "",
   page: 1,
   pageSize: 10,
 });
 
 //用于ID查询
-const userID = reactive({
-  farmerId: "",
-});
+// const userID = reactive({
+//   codeId: "",
+// });
 
 const tableData = ref([]);
 const pageTotal = ref(0);
@@ -160,7 +148,7 @@ const pageTotal = ref(0);
 // 获取表格数据
 const getData = async () => {
   console.log(query);
-  const res = await getUser(query);
+  const res = await getCode(query);
   tableData.value = res.data.data.records;
   pageTotal.value = res.data.data.records.length || 50;
   console.log(res);
@@ -171,13 +159,13 @@ getData();
 const handleSearch = async () => {
   query.page = 1;
   getData();
-//   tableData.value = "";
-//   console.log(userID);
-//   const res = await searchUser(userID.farmerId);
-//   tableData.value[0] = res.data.data;
-//   pageTotal.value = res.data.data.records.length || 50;
-//   console.log(res);
-//   console.log(tableData);
+  //   tableData.value = "";
+  //   console.log(userID);
+  //   const res = await searchCode(userID.codeId);
+  //   tableData.value[0] = res.data.data;
+  //   pageTotal.value = res.data.data.records.length || 50;
+  //   console.log(res);
+  //   console.log(tableData);
 };
 // 分页导航
 const handlePageChange = (val) => {
@@ -186,14 +174,14 @@ const handlePageChange = (val) => {
 };
 
 // 删除操作
-const handleDelete = (index, farmerId) => {
+const handleDelete = (index, codeId) => {
   // 二次确认删除
   ElMessageBox.confirm("确定要删除吗？", "提示", {
     type: "warning",
   })
     .then(() => {
       ElMessage.success("删除成功");
-      const res = deleteUser(farmerId);
+      const res = deleteCode(codeId);
       console.log(res);
       //后端删除之后前端同步删除
       tableData.value.splice(index, 1);

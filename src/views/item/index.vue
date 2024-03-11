@@ -4,11 +4,11 @@
       <div class="search-box">
         <el-input
           v-model="query.name"
-          placeholder="用户名"
+          placeholder="商品名"
           class="search-input mr10"
           clearable
         ></el-input>
-        <el-button type="primary" :icon="Search" @click="handleSearch"
+        <el-button type="primary" :icon="Search" @click="getData"
           >搜索</el-button
         >
         <el-button
@@ -18,7 +18,6 @@
           >新增</el-button
         >
       </div>
-
       <el-table
         :data="tableData"
         border
@@ -27,38 +26,66 @@
         header-cell-class-name="table-header"
       >
         <el-table-column
-          prop="farmerId"
+          prop="id"
           label="ID"
           width="65"
           align="center"
         ></el-table-column>
 
         <el-table-column
-          prop="number"
-          label="农民号"
-          width="100"
+          prop="name"
+          label="商品名"
           align="center"
         ></el-table-column>
 
         <el-table-column
-          prop="name"
-          label="用户名"
+          prop="description"
+          label="描述"
           align="center"
         ></el-table-column>
 
-        <el-table-column label="联系方式" align="center">
-          <template #default="scope">{{ scope.row.phone }}</template>
+        <el-table-column label="图片(查看大图)" align="center">
+          <template #default="scope">
+            <el-image
+              class="table-td-thumb"
+              :src="tableData[scope.$index].image"
+              :preview-src-list="scope.row"
+              :z-index="50"
+              preview-teleported
+            >
+            </el-image>
+          </template>
         </el-table-column>
 
         <el-table-column
-          prop="address"
-          label="地址"
+          prop="price"
+          label="价格"
+          width="65"
           align="center"
         ></el-table-column>
 
         <el-table-column
-          prop="starLevel"
-          label="账户等级"
+          prop="inventory"
+          label="库存"
+          width="65"
+          align="center"
+        ></el-table-column>
+
+        <el-table-column
+          prop="farmerId"
+          label="对应农民ID"
+          align="center"
+        ></el-table-column>
+
+        <el-table-column
+          prop="createTime"
+          label="创建时间"
+          align="center"
+        ></el-table-column>
+
+        <el-table-column
+          prop="updateTime"
+          label="更新时间"
           align="center"
         ></el-table-column>
 
@@ -85,7 +112,7 @@
               type="danger"
               size="small"
               :icon="Delete"
-              @click="handleDelete(scope.$index, scope.row.farmerId)"
+              @click="handleDelete(scope.$index, scope.row.id)"
               v-permiss="16"
             >
               删除
@@ -104,9 +131,8 @@
         ></el-pagination>
       </div>
     </div>
-
     <el-dialog
-      :title="idEdit ? '编辑用户' : '新增用户'"
+      :title="idEdit ? '编辑商品' : '新增商品'"
       v-model="visible"
       width="500px"
       destroy-on-close
@@ -115,9 +141,8 @@
     >
       <TableEdit :data="rowData" :edit="idEdit" :update="updateData" />
     </el-dialog>
-
     <el-dialog
-      title="查看用户详情"
+      title="查看商品详情"
       v-model="visible1"
       width="700px"
       destroy-on-close
@@ -127,7 +152,7 @@
   </div>
 </template>
 
-<script setup name="customer">
+<script setup name="item">
 import { ref, reactive } from "vue";
 import { ElMessage, ElMessageBox } from "element-plus";
 import {
@@ -137,8 +162,7 @@ import {
   CirclePlusFilled,
   View,
 } from "@element-plus/icons-vue";
-// eslint-disable-next-line no-unused-vars
-import { getUser, deleteUser, searchUser } from "@/api/user";
+import { getItem, searchItem, deleteItem } from "@/api/item";
 import TableEdit from "./table-edit.vue";
 import TableDetail from "./table-detail.vue";
 
@@ -150,35 +174,20 @@ const query = reactive({
 });
 
 //用于ID查询
-const userID = reactive({
-  farmerId: "",
-});
+const itemID = "";
 
 const tableData = ref([]);
 const pageTotal = ref(0);
 
 // 获取表格数据
 const getData = async () => {
-  console.log(query);
-  const res = await getUser(query);
+  const res = await getItem(query);
   tableData.value = res.data.data.records;
   pageTotal.value = res.data.data.records.length || 50;
   console.log(res);
 };
 getData();
 
-// 查询操作
-const handleSearch = async () => {
-  query.page = 1;
-  getData();
-//   tableData.value = "";
-//   console.log(userID);
-//   const res = await searchUser(userID.farmerId);
-//   tableData.value[0] = res.data.data;
-//   pageTotal.value = res.data.data.records.length || 50;
-//   console.log(res);
-//   console.log(tableData);
-};
 // 分页导航
 const handlePageChange = (val) => {
   query.page = val;
@@ -186,17 +195,16 @@ const handlePageChange = (val) => {
 };
 
 // 删除操作
-const handleDelete = (index, farmerId) => {
+const handleDelete = (index, itemID) => {
   // 二次确认删除
   ElMessageBox.confirm("确定要删除吗？", "提示", {
     type: "warning",
   })
     .then(() => {
-      ElMessage.success("删除成功");
-      const res = deleteUser(farmerId);
-      console.log(res);
-      //后端删除之后前端同步删除
       tableData.value.splice(index, 1);
+      const res = deleteItem(itemID);
+      console.log(res);
+      ElMessage.success("删除成功");
     })
     .catch(() => {});
 };

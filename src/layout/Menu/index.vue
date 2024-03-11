@@ -41,7 +41,7 @@
 
 <script setup>
 import { computed } from 'vue';
-import { useSidebarStore } from '../../store/sidebar';
+import { useSidebarStore } from '@/store/sidebar';
 import { useRoute } from 'vue-router';
 // eslint-disable-next-line no-unused-vars
 import { User, Odometer } from "@element-plus/icons-vue";
@@ -54,26 +54,26 @@ const items = [
         permiss: '2',
     },
     {
-        icon: 'User',
-        index: '/customer',
-        title: '订单管理',
-        permiss: '2',
-    },
-    {
-        icon: 'User',
-        index: '/customer',
+        icon: 'Apple',
+        index: '/item',
         title: '商品管理',
         permiss: '2',
     },
     {
-        icon: 'User',
-        index: '/customer',
+        icon: 'Folder',
+        index: '/order',
+        title: '订单管理',
+        permiss: '2',
+    },
+    {
+        icon: 'Postcard',
+        index: '/ad',
         title: '广告',
         permiss: '2',
     },
     {
-        icon: 'User',
-        index: '/customer',
+        icon: 'Paperclip',
+        index: '/code',
         title: '溯源',
         permiss: '2',
     }

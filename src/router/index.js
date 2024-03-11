@@ -4,10 +4,6 @@ import NProgress from "nprogress";
 import "nprogress/nprogress.css";
 
 const routes = [
-    // {
-    //     path: "/",
-    //     redirect: "/login",
-    // },
     {
         path: "/",
         name: "Home",
@@ -23,16 +19,6 @@ const routes = [
                 component: () =>
                     import(/* webpackChunkName: "user" */ "../views/user"),
             },
-            // {
-            //     path: "/dashboard",
-            //     name: "dashboard",
-            //     meta: {
-            //         title: "系统首页",
-            //         permiss: "1",
-            //     },
-            //     component: () =>
-            //         import(/* webpackChunkName: "dashboard" */ "../views/dashboard.vue"),
-            // },
             {
                 path: "/customer",
                 name: "customer",
@@ -41,44 +27,54 @@ const routes = [
                     // permiss: "2",
                 },
                 component: () =>
-                    import(/* webpackChunkName: "import" */ "../views/customer"),
+                    import(/* webpackChunkName: "customer" */ "../views/customer"),
             },
-            // {
-            //     path: "/customer",
-            //     name: "customer",
-            //     meta: {
-            //         title: "订单管理",
-            //         permiss: "2",
-            //     },
-            //     component: () =>
-            //         import(/* webpackChunkName: "import" */ "../views/customer.vue"),
-            // },
-            // {
-            //     path: "/customer",
-            //     name: "customer",
-            //     meta: {
-            //         title: "商品管理",
-            //         permiss: "2",
-            //     },
-            //     component: () =>
-            //         import(/* webpackChunkName: "import" */ "../views/customer.vue"),
-            // },
-            // {
-            //     path: "/customer",
-            //     name: "customer",
-            //     meta: {
-            //         title: "溯源",
-            //         permiss: "2",
-            //     },
-            //     component: () =>
-            //         import(/* webpackChunkName: "import" */ "../views/customer.vue"),
-            // },
+            {
+                path: "/item",
+                name: "item",
+                meta: {
+                    title: "商品管理",
+                    // permiss: "2",
+                },
+                component: () =>
+                    import(/* webpackChunkName: "item" */ "../views/item"),
+            },
+            {
+                path: "/order",
+                name: "order",
+                meta: {
+                    title: "订单管理",
+                    // permiss: "2",
+                },
+                component: () =>
+                    import(/* webpackChunkName: "order" */ "../views/order"),
+            },
+            {
+                path: "/ad",
+                name: "ad",
+                meta: {
+                    title: "广告",
+                    // permiss: "2",
+                },
+                component: () =>
+                    import(/* webpackChunkName: "ad" */ "../views/ad"),
+            },
+            {
+                path: "/code",
+                name: "code",
+                meta: {
+                    title: "溯源",
+                    // permiss: "2",
+                },
+                component: () =>
+                    import(/* webpackChunkName: "code" */ "../views/code"),
+            },
         ]
     },
     {
         path: '/login',
         name: 'Login',
-        component: () => import(/* webpackChunkName: "about" */ '../views/login')
+        component: () => import(/* webpackChunkName: "login" */ '../views/login')
     }
 ]
 
@@ -91,5 +87,15 @@ const router = createRouter({
 router.afterEach(() => {
     NProgress.done();
 });
+
+// router.onError((error) => {
+//     const pattern = /Loading chunk (\d)+ failed/g;
+//     const isChunkLoadFailed = error.message.match(pattern);
+//     const targetPath = router.history.pending.fullPath;
+//     if (isChunkLoadFailed) {
+//         router.replace(targetPath);
+//     }
+// })
+
 
 export default router;

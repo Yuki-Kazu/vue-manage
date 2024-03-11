@@ -1,42 +1,68 @@
 <template>
-	<el-descriptions title="" :column="2" border>
-		<el-descriptions-item>
-			<template #label> 用户ID </template>
-			{{ data.id }}
-		</el-descriptions-item>
-		<el-descriptions-item>
-			<template #label> 用户名 </template>
-			{{ data.name }}
-		</el-descriptions-item>
-		<el-descriptions-item>
-			<template #label> 联系方式 </template>
-			{{ data.phone }}
-		</el-descriptions-item>
-		<el-descriptions-item>
-			<template #label> 账户状态 </template>
-			{{ data.state ? '顾客' : '农民' }}
-		</el-descriptions-item>
-		<el-descriptions-item :span="2">
-			<template #label> 地址 </template>
-			{{ data.address }}
-		</el-descriptions-item>
-		<el-descriptions-item>
-			<template #label> 日期 </template>
-			{{ data.date }}
-		</el-descriptions-item>
-		<el-descriptions-item>
-			<template #label> 头像 </template>
-			<img :src="data.thumb" style="width: 120px" alt="" />
-		</el-descriptions-item>
-	</el-descriptions>
+  <el-descriptions title="" :column="2" border>
+    <el-descriptions-item>
+      <template #label> 订单ID </template>
+      {{ data.id }}
+    </el-descriptions-item>
+
+    <el-descriptions-item>
+      <template #label> 订单号 </template>
+      {{ data.number }}
+    </el-descriptions-item>
+
+    <el-descriptions-item>
+      <template #label> 总价 </template>
+      {{ data.totalPrices }}
+    </el-descriptions-item>
+
+    <el-descriptions-item>
+      <template #label> 运单号 </template>
+      {{ data.trackingNumber }}
+    </el-descriptions-item>
+
+    <el-descriptions-item>
+      <template #label> 创建时间 </template>
+      {{ data.createTime }}
+    </el-descriptions-item>
+
+    <el-descriptions-item>
+      <template #label> 支付时间 </template>
+      {{ data.payTime }}
+    </el-descriptions-item>
+
+    <el-descriptions-item>
+      <template #label> 交易代码 </template>
+      {{ data.tradeCode }}
+    </el-descriptions-item>
+
+    <el-descriptions-item>
+      <template #label> 买家ID </template>
+      {{ data.consumerId }}
+    </el-descriptions-item>
+
+    <el-descriptions-item>
+      <template #label> 地址ID </template>
+      {{ data.addressId }}
+    </el-descriptions-item>
+
+    <el-descriptions-item>
+      <template #label> 星级 </template>
+      {{ data.status }}
+    </el-descriptions-item>
+
+    <el-descriptions-item>
+      <template #label> 买家留言 </template>
+      {{ data.remark }}
+    </el-descriptions-item>
+  </el-descriptions>
 </template>
 
 <script setup>
 // eslint-disable-next-line no-unused-vars, no-undef
 const props = defineProps({
-	data: {
-		type: Object,
-		required: true
-	}
+  data: {
+    type: Object,
+    required: true,
+  },
 });
 </script>

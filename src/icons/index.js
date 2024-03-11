@@ -1,4 +1,4 @@
-import SvgIcon from '../component/SvgIcon';
+import SvgIcon from '@/component/SvgIcon';
 
 const svgRequired = require.context('./svg', false, /\.svg$/);
 svgRequired.keys().forEach((item) => svgRequired(item).default);

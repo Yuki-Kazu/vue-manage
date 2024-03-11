@@ -2,7 +2,7 @@
 	<el-descriptions title="" :column="2" border>
         <el-descriptions-item>
 			<template #label> ID </template>
-			{{ data.id }}
+			{{ data.farmerId }}
 		</el-descriptions-item>
         
 		<el-descriptions-item>

@@ -49,7 +49,7 @@
 import { ref, reactive } from 'vue';
 import { ElMessage } from 'element-plus';
 import { useStore } from 'vuex';
-import { login } from '@/api/login';
+import { login } from '@/api/index';
 
 //获取本地保存的登录记录
 // const lgStr = localStorage.getItem('login-param');

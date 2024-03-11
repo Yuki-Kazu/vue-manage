@@ -1,6 +1,6 @@
 import request from "./request";
 
-//上传用户数据
+//上传用户
 export const uploadUser = (data) => {
     return request({
         url: "/admin/farmer/add",
@@ -9,27 +9,28 @@ export const uploadUser = (data) => {
     });
 };
 
-//删除用户数据
+//删除用户
 export const deleteUser = (userId) => {
     return request({
-        url: `/admin/farmer/delete/?id=${userId}`,
+        url: `/admin/farmer/delete?id=${userId}`,
         method: "DELETE",
     });
 };
 
-//修改用户数据
+//修改用户
 export const updateUser = (data) => {
     return request({
         url: "/admin/farmer/change",
-        method: "POST",
+        method: "PUT",
         data,
     });
 };
 
-//获取用户数据
+//获取用户
 export const getUser = (params) => {
     return request({
         url: "/admin/farmer/page",
+        method: "GET",
         params,
     })
 }

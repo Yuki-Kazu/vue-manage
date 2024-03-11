@@ -26,7 +26,7 @@
 </template>
 
 <script setup>
-import { useSidebarStore } from '../store/sidebar';
+import { useSidebarStore } from '@/store/sidebar';
 import Header from './Header';
 import Menu from './Menu';
 
