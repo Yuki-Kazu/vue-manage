@@ -1,3 +1,4 @@
+<!-- eslint-disable vue/no-parsing-error -->
 <template>
   <div>
     <div class="container">
@@ -46,7 +47,15 @@
         ></el-table-column>
 
         <el-table-column prop="video" label="视频" align="center">
-          <VideoPlayer :videoSrc="video" />
+          <template #default="scope">
+            <video
+              width="280"
+              height="210"
+              :src="scope.row.video"
+              type="video/mp4"
+              controls
+            ></video>
+          </template>
         </el-table-column>
 
         <el-table-column label="操作" width="240" align="center">
@@ -93,7 +102,7 @@
     </div>
 
     <el-dialog
-      :title="idEdit ? '编辑用户' : '新增用户'"
+      :title="idEdit ? '编辑溯源' : '新增溯源'"
       v-model="visible"
       width="500px"
       destroy-on-close
@@ -104,7 +113,7 @@
     </el-dialog>
 
     <el-dialog
-      title="查看用户详情"
+      title="查看溯源详情"
       v-model="visible1"
       width="700px"
       destroy-on-close
@@ -127,7 +136,6 @@ import {
 import { getCode, deleteCode, searchCode } from "@/api/code";
 import TableEdit from "./table-edit.vue";
 import TableDetail from "./table-detail.vue";
-import VideoPlayer from "../../component/video/video.vue";
 
 //用于分页查询
 const query = reactive({

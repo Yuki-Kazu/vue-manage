@@ -25,3 +25,11 @@ export const getOrder = (data) => {
         data,
     })
 }
+
+//获取地址与用户
+export const getAddress = (addressId) => {
+    return request({
+        url: `/admin/order/address?addressId=${addressId}`,
+        method: "GET",
+    })
+}

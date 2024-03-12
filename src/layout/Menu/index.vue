@@ -50,7 +50,7 @@ const items = [
     {
         icon: 'User',
         index: '/customer',
-        title: '用户信息（管理员）',
+        title: '农民管理',
         permiss: '2',
     },
     {

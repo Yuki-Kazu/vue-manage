@@ -30,7 +30,7 @@
     </el-descriptions-item>
     <el-descriptions-item>
       <template #label> 图片 </template>
-      <img :src="data.image" style="width: 600px" alt="" />
+      <img :src="data.image" style="width: 300px" alt="" />
     </el-descriptions-item>
   </el-descriptions>
 </template>

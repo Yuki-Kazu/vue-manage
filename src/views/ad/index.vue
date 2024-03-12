@@ -45,7 +45,7 @@
           align="center"
         ></el-table-column>
 
-        <el-table-column label="图片(查看大图)" align="center">
+        <el-table-column label="图片" align="center">
           <template #default="scope">
             <el-image
               class="table-td-thumb"

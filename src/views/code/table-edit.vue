@@ -30,9 +30,54 @@
       />
     </el-form-item>
 
-    <!-- <el-form-item label="视频" prop="video">
-      <el-input v-model="form.video"></el-input>
+    <!-- <el-form-item label="上传图片" prop="image">
+      <el-upload
+        v-model:file-list="fileList"
+        class="upload-demo"
+        :action="uploadUrl.uploadUrl"
+        :headers="user"
+        :on-success="handleAvatarSuccess"
+        :before-upload="beforeAvatarUpload"
+        :limit="1"
+      >
+        <el-icon><Plus /></el-icon>
+        <template #file="{ file }">
+          <div>
+            <img
+              class="el-upload-list__item-thumbnail"
+              :src="file.url"
+              alt=""
+            />
+          </div>
+        </template>
+      </el-upload>
     </el-form-item> -->
+    <el-form-item label="视频" prop="video">
+      <!-- <el-upload
+        class="upload-demo"
+        :action="uploadUrl.uploadUrl"
+        :headers="user"
+        :auto-upload="false"
+        :on-success="handleAvatarSuccess"
+        :before-upload="beforeAvatarUpload"
+      >
+        <el-button type="primary">Click to upload</el-button>
+      </el-upload> -->
+      <el-upload
+        class="avatar-uploader"
+        :action="uploadUrl.uploadUrl"
+        :headers="user"
+        :show-file-list="false"
+        :on-success="handleAvatarSuccess"
+        :before-upload="beforeAvatarUpload"
+      >
+        <img v-if="imageUrl" :src="imageUrl" class="avatar" />
+        <el-icon v-else class="avatar-uploader-icon"><Plus /></el-icon>
+        <template #tip>
+          <div class="el-upload__tip">视频大小不能超过10MB</div>
+        </template>
+      </el-upload>
+    </el-form-item>
 
     <el-form-item>
       <el-button type="primary" @click="saveEdit(formRef)">保 存</el-button>
@@ -119,6 +164,32 @@ const saveEdit = (formEl) => {
 
     ElMessage.success("保存成功！");
   });
+};
+
+//文件上传
+const uploadUrl = ref({
+  uploadUrl: process.env.VUE_APP_BASE_API + "/admin/common/upload",
+});
+const user = ref({
+  token: localStorage.getItem("token") || "{}",
+});
+const handleAvatarSuccess = (response, _file) => {
+    tableData
+  tableData.value.video = response.data;
+  console.log(response);
+  console.log(tableData);
+};
+//文件检测
+const beforeAvatarUpload = (rawFile) => {
+  //   console.log(rawFile);
+  if (rawFile.type !== "video/mp4") {
+    ElMessage.error("只能上传视频(MP4)");
+    return false;
+  } else if (rawFile.size / 1024 / 1024 > 10) {
+    ElMessage.error("不能大于10MB");
+    return false;
+  }
+  return true;
 };
 </script>
 

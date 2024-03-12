@@ -9,7 +9,7 @@
       <template #label> 收获时间 </template>
       {{ tableData.harvestDate }}
     </el-descriptions-item>
-    
+
     <el-descriptions-item>
       <template #label> 地址 </template>
       {{ tableData.address }}
@@ -32,8 +32,17 @@
 
     <el-descriptions-item>
       <template #label> 视频 </template>
-      {{ tableData.video }}
+      <video
+        width="600"
+        height="450"
+        :src="tableData.video"
+        type="video/mp4"
+        controls
+      ></video>
     </el-descriptions-item>
+
+    <el-table-column prop="video" label="视频" align="center">
+    </el-table-column>
   </el-descriptions>
 </template>
 

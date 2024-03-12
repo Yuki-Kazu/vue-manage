@@ -1,25 +1,35 @@
 <template>
-  <el-descriptions title="" :column="2" border>
-    <el-descriptions-item :span="2">
-      <template #label> ID </template>
-      {{ tableData.number }}
-    </el-descriptions-item>
+  <el-table
+    :data="tableData"
+    border
+    class="table"
+    ref="multipleTable"
+    header-cell-class-name="table-header"
+  >
+    <el-table-column label="图片" align="center">
+      <template #default="scope">
+        <el-image
+          class="table-td-thumb"
+          :src="tableData[scope.$index].image"
+          :preview-src-list="scope.row"
+          :z-index="50"
+          preview-teleported
+        >
+        </el-image>
+      </template>
+    </el-table-column>
 
-    <el-descriptions-item>
-      <template #label> 名字 </template>
-      {{ tableData.name }}
-    </el-descriptions-item>
+    <el-table-column prop="name" label="商品名称" align="center"></el-table-column>
 
-    <el-descriptions-item>
-      <template #label> 单价 </template>
-      {{ tableData.price }}
-    </el-descriptions-item>
+    <el-table-column
+      prop="number"
+      label="数量"
+      width="65"
+      align="center"
+    ></el-table-column>
 
-    <el-descriptions-item>
-      <template #label> 图片 </template>
-      {{ tableData.image }}
-    </el-descriptions-item>
-  </el-descriptions>
+    <el-table-column prop="price" label="单价" align="center"></el-table-column>
+  </el-table>
 </template>
 
 <script setup>
@@ -38,8 +48,29 @@ const tableData = ref([]);
 // 获取表格数据
 const getData = async () => {
   const res = await getOrigin(props.data.id);
-  console.log(res)
-  tableData.value = res.data.data[0];
+  console.log(res);
+  tableData.value = res.data.data;
 };
 getData();
 </script>
+
+<style lang="scss" scoped>
+.search-box {
+  margin-bottom: 20px;
+}
+
+.search-input {
+  width: 200px;
+}
+
+.mr10 {
+  margin-right: 10px;
+}
+
+.table-td-thumb {
+  display: block;
+  margin: auto;
+  width: 40px;
+  height: 40px;
+}
+</style>

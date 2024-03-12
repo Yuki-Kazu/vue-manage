@@ -23,12 +23,6 @@
         <el-button type="primary" :icon="Search" @click="handleSearch"
           >搜索</el-button
         >
-        <el-button
-          type="warning"
-          :icon="CirclePlusFilled"
-          @click="visible = true"
-          >新增</el-button
-        >
       </div>
 
       <el-table
@@ -69,11 +63,8 @@
           align="center"
         ></el-table-column>
 
-        <el-table-column
-          prop="consumerId"
-          label="买家ID"
-          align="center"
-        ></el-table-column>
+        <el-table-column prop="consumerId" label="买家ID" align="center">
+        </el-table-column>
 
         <el-table-column
           prop="remark"
@@ -98,7 +89,7 @@
               @click="handleOrigin(scope.row)"
               v-permiss="15"
             >
-              溯源
+              商品
             </el-button>
             <el-button
               type="primary"
@@ -112,6 +103,7 @@
           </template>
         </el-table-column>
       </el-table>
+
       <div class="pagination">
         <el-pagination
           background
@@ -125,7 +117,7 @@
     </div>
 
     <el-dialog
-      :title="idEdit ? '编辑用户' : '新增用户'"
+      :title="idEdit ? '编辑订单' : '新增订单'"
       v-model="visible"
       width="500px"
       destroy-on-close
@@ -136,7 +128,7 @@
     </el-dialog>
 
     <el-dialog
-      title="查看用户详情"
+      title="查看订单详情"
       v-model="visible1"
       width="700px"
       destroy-on-close
@@ -165,8 +157,7 @@ import {
   CirclePlusFilled,
   View,
 } from "@element-plus/icons-vue";
-// eslint-disable-next-line no-unused-vars
-import { getOrder, deleteOrder, searchOrder } from "@/api/order";
+import { getOrder } from "@/api/order";
 import TableEdit from "./table-edit.vue";
 import TableDetail from "./table-detail.vue";
 import TableOrigin from "./table-origin.vue";
@@ -180,73 +171,44 @@ const query = reactive({
   pageSize: 10,
 });
 
-//用于ID查询
-// const userID = reactive({
-//   id: "",
-// });
-
 const tableData = ref([]);
+const address_name = ref([]);
+let Data = ref([])
 const pageTotal = ref(0);
 
 // 获取表格数据
 const getData = async () => {
-  console.log(query);
   const res = await getOrder(query);
   console.log(res);
   tableData.value = res.data.data.records;
   pageTotal.value = res.data.data.records.length || 50;
 
-  // tableData.value = [
-  //     {
-  //         id: 10000,
-  //         number: 1111,
-  //         name: "张三",
-  //         phone: 123456,
-  //         address: "广东省惠州市",
-  //         starLevel: 5,
-  //     },
-  //     {
-  //         id: 2,
-  //         number: 2222,
-  //         name: "李四",
-  //         phone: 78910,
-  //         address: "广东省汕头市",
-  //         starLevel: 4.5,
-  //     },
-  // ];
+//   //获取地址、姓名、联系方式
+//   for (let index = 0; index < res.data.data.records.length; index++) {
+//     if (tableData.value[index].addressId != null) {
+//       const addressId = tableData.value[index].addressId;
+//       const res_2 = await getAddress(addressId);
+//       console.log(res_2);
+//       address_name.value[index] = res_2.data.data;
+//     } else {
+//       address_name.value[index] = null;
+//     }
+//   }
+//   console.log(tableData);
+//   console.log(address_name);
+//   Data = tableData.value[0].concat(address_name.value[0])
+//   console.log(Data)
 };
 getData();
 
 // 查询操作
 const handleSearch = async () => {
   getData();
-  // query.page = 1;
-  // userID.value.id = userId;
-  // const res = await searchOrder(userId)
-  // console.log(res)
-  // tableData.value = res.data.data.records;
-  // pageTotal.value = res.data.data.records.length || 50;
 };
 // 分页导航
 const handlePageChange = (val) => {
   query.page = val;
   getData();
-};
-
-// 删除操作
-// eslint-disable-next-line no-unused-vars
-const handleDelete = (index) => {
-  // 二次确认删除
-  ElMessageBox.confirm("确定要删除吗？", "提示", {
-    type: "warning",
-  })
-    .then(() => {
-      ElMessage.success("删除成功");
-      // tableData.value.splice(index, 1);
-      const res = deleteOrder();
-      console.log(res);
-    })
-    .catch(() => {});
 };
 
 const visible = ref(false);

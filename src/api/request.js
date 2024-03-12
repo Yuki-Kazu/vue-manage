@@ -2,9 +2,9 @@ import axios from "axios";
 // import { ElMessage } from "element-plus";
 
 const service = axios.create({
-    // baseURL: process.env.VUE_APP_BASE_API,
+    baseURL: process.env.VUE_APP_BASE_API,
     // baseURL: "https://e3256f43-56cf-452c-a339-733182c9254c.mock.pstmn.io", //测试用
-    baseURL: "http://6a2bc4b7.r3.cpolar.cn",
+    // baseURL: "http://6a2bc4b7.r3.cpolar.cn",
     timeout: 5000,
 });
 

@@ -41,11 +41,23 @@
       <el-upload
         v-model:file-list="fileList"
         class="upload-demo"
-        action="http://6a2bc4b7.r3.cpolar.cn/admin/common/upload"
+        list-type="picture-card"
+        :action="uploadUrl.uploadUrl"
         :headers="user"
         :on-success="handleAvatarSuccess"
+        :before-upload="beforeAvatarUpload"
+        :limit="1"
       >
-        <el-button type="primary">Click to upload</el-button>
+        <el-icon><Plus /></el-icon>
+        <template #file="{ file }">
+          <div>
+            <img
+              class="el-upload-list__item-thumbnail"
+              :src="file.url"
+              alt=""
+            />
+          </div>
+        </template>
       </el-upload>
     </el-form-item>
 
@@ -157,46 +169,28 @@ const saveEdit = (formEl) => {
 };
 
 //文件上传
-// export const uploadData = (file) => {
-//     return request({
-//         url: "/admin/admin/login",
-//         method: "POST",
-//       data: {"file": file}
-//     });
-// };
-
-// const handleSuccess = (response, uploadFile) => {
-//   console.log("handleSuccess");
-//   form.value.image = URL.createObjectURL(uploadFile.raw);
-//   ElMessage.success("上传成功！");
-// };
-
-// const beforeUpload = (rawFile) => {
-//   console.log("beforeUpload");
-//   if (rawFile.type !== "image/jpeg") {
-//     ElMessage.error("只能上传 JPG !");
-//     return false;
-//   } else if (rawFile.size / 1024 / 1024 > 2) {
-//     ElMessage.error("不能大于 2MB!");
-//     return false;
-//   }
-//   try {
-//     const res = uploadData(rawFile);
-//     console.log("uploadData");
-//     console.log(res);
-//   } catch (error) {
-//     console.error("上传失败", error);
-//     ElMessage.error("上传失败");
-//     return false;
-//   }
-//   return true;
-// };
-
+const uploadUrl = ref({
+  uploadUrl: process.env.VUE_APP_BASE_API + "/admin/common/upload",
+});
 const user = ref({
   token: localStorage.getItem("token") || "{}",
 });
 const handleAvatarSuccess = (response, _file) => {
   form.value.image = response.data;
+  console.log(response);
+  console.log(form);
+};
+//文件检测
+const beforeAvatarUpload = (rawFile) => {
+  //   console.log(rawFile);
+  if (rawFile.type !== "image/jpeg" && rawFile.type !== "image/png") {
+    ElMessage.error("只能上传图片(JPG/PNG)");
+    return false;
+  } else if (rawFile.size / 1024 / 1024 > 3) {
+    ElMessage.error("不能大于3MB");
+    return false;
+  }
+  return true;
 };
 </script>
 

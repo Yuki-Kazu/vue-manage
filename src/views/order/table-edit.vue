@@ -70,8 +70,15 @@ const saveEdit = (formEl) => {
       console.log(updateData);
       const res = deliverOrder(updateData);
       console.log(res);
+      res.then((result) => {
+        console.log(result.data);
+        if (result.code == 1) {
+          ElMessage.success(result.data.msg);
+        } else {
+          ElMessage.error(result.data.msg);
+        }
+      });
     }
-    ElMessage.success("保存成功！");
   });
 };
 </script>

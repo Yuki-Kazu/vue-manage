@@ -71,7 +71,7 @@ module.exports = {
         hot: "only",
         proxy: {
             "/api": {
-                target: "https://e3256f43-56cf-452c-a339-733182c9254c.mock.pstmn.io",
+                target: "http://22d8ee53.r7.cpolar.top",
                 changeorigin: true,
                 pathRewrite: {
                     "^/api": "",
